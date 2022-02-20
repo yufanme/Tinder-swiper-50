@@ -9,7 +9,7 @@ import os
 
 FACEBOOK_EMAIL = os.environ["FACEBOOK_EMAIL"]
 FACEBOOK_PASSWORD = os.environ["FACEBOOK_PASSWORD"]
-TINDER_URL = "https://tinder.com/"
+TINDER_URL = "https://tinder.com/app/recs"
 
 # todo 0 initialize webdriver
 chrome_driver_path = "/Users/WilliamYu/Development/chromedriver"
@@ -17,7 +17,7 @@ service = Service(executable_path=chrome_driver_path)
 driver = webdriver.Chrome(service=service)
 driver.get(TINDER_URL)
 
-time.sleep(2)
+time.sleep(5)
 
 # todo 1 click login
 login_button = driver.find_element(By.XPATH, '//*[@id="o41285377"]/div/div[1]/div/main/div[1]/div/div/div/div/header/div/div[2]/div[2]/a/span')
@@ -38,16 +38,21 @@ print(driver.title)
 
 facebook_email = driver.find_element(By.XPATH, '//*[@id="email"]')
 facebook_email.send_keys(FACEBOOK_EMAIL)
+
+time.sleep(random.uniform(1, 2))
+
 facebook_password = driver.find_element(By.NAME, "pass")
 facebook_password.send_keys(FACEBOOK_PASSWORD)
-time.sleep(random.random())
+
+time.sleep(random.uniform(1, 2))
+
 facebook_password.send_keys(Keys.ENTER)
 
 # switch back to base window
 driver.switch_to.window(base_window)
-print(driver.title)
+# print(f"base window:\ntitle->{driver.title}\nname->{driver.window_handles}")
 
-time.sleep(10)
+time.sleep(15)
 
 # todo 3 input email and password of facebook
 
@@ -55,29 +60,35 @@ time.sleep(10)
 location_button = driver.find_element(By.XPATH, '//*[@id="o-1687095699"]/div/div/div/div/div[3]/button[1]')
 location_button.click()
 
+time.sleep(random.uniform(1, 2))
+
 # click not allow notification anchor
 not_allow_notification_anchor = driver.find_element(By.XPATH, '//*[@id="o-1687095699"]/div/div/div/div/div[3]/button[2]')
 not_allow_notification_anchor.click()
+
+time.sleep(random.uniform(1, 2))
 
 # click accept cookies button
 accept_cookies_button = driver.find_element(By.XPATH, '//*[@id="o41285377"]/div/div[2]/div/div/div[1]/button')
 accept_cookies_button.click()
 
-time.sleep(5)
+time.sleep(10)
 
 for n in range(100):
+    # print(f"pick window:\ntitle->{driver.title}\nname->{driver.window_handles}")
     time.sleep(random.uniform(1, 2))
     try:
-        print("called")
-        pick_button = driver.find_element(By.XPATH, '//*[@id="o41285377"]/div/div[1]/div/main/div[1]/div/'
-                                                    'div/div[1]/div[1]/div/div[4]/div/div[4]/button')
+        pick_button = driver.find_element(By.XPATH, '//*[@id="q1323319974"]/div/div[1]/div/main/div[1]/div/div/div[1]/div[1]/div/div[4]/div/div[4]/button')
         pick_button.click()
+        print("clicked like.")
     # Catches the cases where there is a "Matched" pop-up in front of the "Like" button:
-    except ElementClickInterceptedException:
+    except NoSuchElementException:
         try:
             match_popup = driver.find_element(By.CSS_SELECTOR, ".itsAMatch a")
             match_popup.click()
+            print("clicked match.")
         except NoSuchElementException:
             time.sleep(random.uniform(2, 3))
+            print("do not find like button.")
 
 driver.quit()
