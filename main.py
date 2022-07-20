@@ -15,7 +15,7 @@ TINDER_URL = "https://tinder.com/app/recs"
 DAILY_WIPE_TIMES = 100
 
 # todo 0 initialize webdriver
-chrome_driver_path = "C:/Development/chromedriver.exe"
+chrome_driver_path = "/Users/fan/Development/chromedriver"
 service = Service(executable_path=chrome_driver_path)
 driver = webdriver.Chrome(service=service)
 driver.maximize_window()
@@ -96,8 +96,20 @@ time.sleep(5)
 
 for n in range(DAILY_WIPE_TIMES):
     print(f"round {n}.")
-    love_button = WebDriverWait(driver, 300).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div/div[1]/div/main/div[1]/div/div/div[1]/div[1]/div/div[4]/div/div[4]/button/span/span/svg')))
-    love_button.click()
+    try:
+        love_button = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#s2097736098 > div > div.App__body.H\(100\%\).Pos\(r\).Z\(0\) > div > main > div.H\(100\%\) > div > div > div.Mt\(a\).Px\(4px\)--s.Pos\(r\).Expand.H\(--recs-card-height\)--ml.Maw\(--recs-card-width\)--ml.Mah\(fc\)--ml > div.recsCardboard__cardsContainer.H\(100\%\).Pos\(r\).Z\(1\) > div > div.Pos\(a\).B\(0\).Isolate.W\(100\%\).Start\(0\).End\(0\) > div > div.Mx\(a\).Fxs\(0\).Sq\(70px\).Sq\(60px\)--s.Bd.Bdrs\(50\%\).Bdc\(\$c-like-green\) > button > span > span')))
+        love_button.click()
+        time.sleep(random.uniform(1, 2))
+    except ElementClickInterceptedException:
+        try:
+            time.sleep(random.uniform(1, 3))
+            refuse_add_desk = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#s369355022 > div > div > div.Pt\(12px\).Pb\(8px\).Px\(36px\).Px\(24px\)--s > button.button.Lts\(\$ls-s\).Z\(0\).CenterAlign.Mx\(a\).Cur\(p\).Tt\(u\).Ell.Bdrs\(100px\).Px\(24px\).Px\(20px\)--s.Py\(0\).Mih\(42px\)--s.Mih\(50px\)--ml.C\(\$c-secondary\).C\(\$c-base\)\:h.Fw\(\$semibold\).focus-button-style.D\(b\).Mx\(a\) > span')))
+            refuse_add_desk.click()
+            print("refuse to be added to desk.")
+        except ElementClickInterceptedException:
+            time.sleep(random.uniform(1, 3))
+            refuse_tinder_plus = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#s369355022 > div > div > div.Pt\(16px\).Pb\(10px\).Px\(36px\).Py\(8px\)--xs.Px\(12px\)--xs > button.button.Lts\(\$ls-s\).Z\(0\).CenterAlign.Mx\(a\).Cur\(p\).Tt\(u\).Ell.Bdrs\(100px\).Px\(24px\).Px\(20px\)--s.Py\(0\).Mih\(40px\).C\(\$c-secondary\).C\(\$c-base\)\:h.Fw\(\$semibold\).focus-button-style.D\(b\).Mx\(a\) > span')))
+            refuse_tinder_plus.click()
 #     print(f"pick window:\ntitle->{driver.title}\nname->{driver.window_handles}")
 #     time.sleep(random.uniform(1, 2))
 #     try:
